@@ -9,10 +9,12 @@ package rehs.app.mensa;
 
 public final class R {
     public static final class array {
+        public static final int mensa_titles=0x7f060004;
+        public static final int mensa_values=0x7f060005;
         public static final int pref_example_list_titles=0x7f060000;
         public static final int pref_example_list_values=0x7f060001;
-        public static final int pref_sync_frequency_titles=0x7f060002;
-        public static final int pref_sync_frequency_values=0x7f060003;
+        public static final int usertype_titles=0x7f060002;
+        public static final int usertype_values=0x7f060003;
     }
     public static final class attr {
     }

@@ -28,20 +28,25 @@
     <string name="pref_header_data_sync">Data &amp; sync</string>
     <string name="pref_title_sync_frequency">Sync frequency</string>
 
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
+    <string-array name="usertype_titles">
+        <item>Student</item>
+        <item>Bedienstet</item>
+        <item>Gast</item>
     </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
+    <string-array name="usertype_values">
+        <item>STUDIERENDE</item>
+        <item>BEDIENSTETE</item>
+        <item>GAESTE</item>
+    </string-array>
+    
+    <string-array name="mensa_titles">
+        <item>Hauptmensa</item>
+        <item>Campus Vita</item>
+        <item>Egal</item>
+    </string-array>
+    <string-array name="mensa_values">
+        <item>3.500</item>
+        <item>3.580</item>
         <item>-1</item>
     </string-array>
 

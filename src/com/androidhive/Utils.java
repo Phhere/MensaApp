@@ -19,7 +19,7 @@ public class Utils {
 				os.write(bytes, 0, count);
 			}
 		} catch (Exception ex) {
-			Log.e("Copy", ex.getMessage());
+			
 		}
 	}
 

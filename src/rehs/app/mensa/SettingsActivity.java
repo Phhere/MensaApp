@@ -2,6 +2,7 @@ package rehs.app.mensa;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -39,13 +40,28 @@ public class SettingsActivity extends PreferenceActivity {
 	 */
 	private static final boolean ALWAYS_SIMPLE_PREFS = false;
 
+	SharedPreferences.OnSharedPreferenceChangeListener spChanged = new SharedPreferences.OnSharedPreferenceChangeListener() {
+
+		@Override
+		public void onSharedPreferenceChanged(SharedPreferences arg0,
+				String arg1) {
+			Mensa.data.reloadData();
+		}
+
+	    // your stuff here
+
+	};
+	
+	
+	
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 
 		setupSimplePreferencesScreen();
+		PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(spChanged);
 	}
-
+	
 	/**
 	 * Shows the simplified settings UI if the device configuration if the
 	 * device configuration dictates that a simplified, single-pane UI should be
@@ -60,27 +76,21 @@ public class SettingsActivity extends PreferenceActivity {
 		// use the older PreferenceActivity APIs.
 
 		// Add 'general' preferences.
-		addPreferencesFromResource(R.xml.pref_general);
-
-		// Add 'notifications' preferences, and a corresponding header.
-		PreferenceCategory fakeHeader = new PreferenceCategory(this);
-		fakeHeader.setTitle(R.string.pref_header_notifications);
-		getPreferenceScreen().addPreference(fakeHeader);
-		addPreferencesFromResource(R.xml.pref_notification);
+		//addPreferencesFromResource(R.xml.pref_general);
 
 		// Add 'data and sync' preferences, and a corresponding header.
-		fakeHeader = new PreferenceCategory(this);
-		fakeHeader.setTitle(R.string.pref_header_data_sync);
-		getPreferenceScreen().addPreference(fakeHeader);
+		//PreferenceCategory fakeHeader = new PreferenceCategory(this);
+		//fakeHeader.setTitle(R.string.pref_header_data_sync);
+		//getPreferenceScreen().addPreference(fakeHeader);
 		addPreferencesFromResource(R.xml.pref_data_sync);
 
 		// Bind the summaries of EditText/List/Dialog/Ringtone preferences to
 		// their values. When their values change, their summaries are updated
 		// to reflect the new value, per the Android Design guidelines.
-		bindPreferenceSummaryToValue(findPreference("example_text"));
-		bindPreferenceSummaryToValue(findPreference("example_list"));
-		bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
+		//bindPreferenceSummaryToValue(findPreference("example_text"));
+		//bindPreferenceSummaryToValue(findPreference("example_list"));
 		bindPreferenceSummaryToValue(findPreference("sync_frequency"));
+		bindPreferenceSummaryToValue(findPreference("mensa"));
 	}
 
 	/** {@inheritDoc} */
@@ -139,7 +149,7 @@ public class SettingsActivity extends PreferenceActivity {
 						.setSummary(index >= 0 ? listPreference.getEntries()[index]
 								: null);
 
-			} else if (preference instanceof RingtonePreference) {
+			} /*else if (preference instanceof RingtonePreference) {
 				// For ringtone preferences, look up the correct display value
 				// using RingtoneManager.
 				if (TextUtils.isEmpty(stringValue)) {
@@ -162,7 +172,7 @@ public class SettingsActivity extends PreferenceActivity {
 					}
 				}
 
-			} else {
+			}*/ else {
 				// For all other preferences, set the summary to the value's
 				// simple string representation.
 				preference.setSummary(stringValue);
@@ -250,6 +260,7 @@ public class SettingsActivity extends PreferenceActivity {
 			// updated to reflect the new value, per the Android Design
 			// guidelines.
 			bindPreferenceSummaryToValue(findPreference("sync_frequency"));
+			bindPreferenceSummaryToValue(findPreference("mensa"));
 		}
 	}
 }

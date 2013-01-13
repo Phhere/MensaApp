@@ -1,6 +1,6 @@
 package rehs.app.mensa;
 
-import com.androidhive.ImageLoader;
+//import com.androidhive.ImageLoader;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -20,7 +20,7 @@ public class Details extends Activity {
 		
 		// Infos holen welches Essen angezeigt werden soll
 		Intent intent = getIntent();
-		Meal m = Mensa.meals.get(intent.getIntExtra("id", 0));
+		Meal m = DataCollector.meals.get(intent.getIntExtra("id", 0));
 		
 		View view = getLayoutInflater().inflate(R.layout.activity_details, null);
 		
@@ -33,10 +33,11 @@ public class Details extends Activity {
 		beilage.setText(m.beilage);
 		
 		if (m.image != "") {
-			int loader = R.drawable.no_image;
+			/*int loader = R.drawable.no_image;
 			String image_url = m.image;
 			ImageLoader imgLoader = new ImageLoader(this.getBaseContext());
-			imgLoader.DisplayImage(image_url, loader, imageView);
+			imgLoader.DisplayImage(image_url, loader, imageView);*/
+			new ImageLoader(m.image,imageView,R.drawable.no_image);
 		} else {
 			imageView.setImageResource(R.drawable.no_image);
 		}

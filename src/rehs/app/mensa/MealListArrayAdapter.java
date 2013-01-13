@@ -1,9 +1,7 @@
 package rehs.app.mensa;
 
 import java.util.Vector;
-
 import com.androidhive.ImageLoader;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MealListArrayAdapter extends BaseAdapter {
-	private final Vector<Meal> values;
 	private LayoutInflater inflater;
 	private Context context;
 	private String thumbnail = "http://majestix.uni-duesseldorf.info/essen/proxy.php?image=";
 
-	public MealListArrayAdapter(Context context, Vector<Meal> values) {
+	public MealListArrayAdapter(Context context) {
 		super();
-		this.values = values;
 		this.context = context;
 		this.inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -31,7 +27,7 @@ public class MealListArrayAdapter extends BaseAdapter {
 		if (view == null) {
 			view = inflater.inflate(R.layout.item, parent, false);
 		}
-		Meal m = this.values.get(position);
+		Meal m = DataCollector.meals.get(position);
 
 		TextView textView = (TextView) view.findViewById(R.id.title);
 		ImageView imageView = (ImageView) view.findViewById(R.id.thumb);
@@ -43,6 +39,7 @@ public class MealListArrayAdapter extends BaseAdapter {
 			String image_url = this.thumbnail + m.image;
 			ImageLoader imgLoader = new ImageLoader(this.context);
 			imgLoader.DisplayImage(image_url, loader, imageView);
+			//new ImageLoader( m.image, imageView, R.drawable.no_image);*/
 		} else {
 			imageView.setImageResource(R.drawable.no_image);
 		}
@@ -52,12 +49,12 @@ public class MealListArrayAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return this.values.size();
+		return DataCollector.meals.size();
 	}
 
 	@Override
 	public Object getItem(int arg0) {
-		return this.values.get(arg0);
+		return DataCollector.meals.get(arg0);
 	}
 
 	@Override
