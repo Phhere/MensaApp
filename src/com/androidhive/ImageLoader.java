@@ -23,47 +23,48 @@ public class ImageLoader {
 
 	MemoryCache memoryCache = new MemoryCache();
 	FileCache fileCache;
-	private Map<ImageView, String> imageViews = Collections
+	private final Map<ImageView, String> imageViews = Collections
 			.synchronizedMap(new WeakHashMap<ImageView, String>());
 	ExecutorService executorService;
-	private Context context;
+	private final Context context;
 
 	public ImageLoader(Context context) {
-		fileCache = new FileCache(context);
+		this.fileCache = new FileCache(context);
 		this.context = context;
-		executorService = Executors.newFixedThreadPool(5);
+		this.executorService = Executors.newFixedThreadPool(5);
 	}
 
 	int stub_id = R.drawable.ic_launcher;
 
 	public void DisplayImage(String url, int loader, ImageView imageView) {
-		stub_id = loader;
-		imageViews.put(imageView, url);
-		Bitmap bitmap = memoryCache.get(url);
-		File f = fileCache.getFile(url);
-		if (bitmap != null)
+		this.stub_id = loader;
+		this.imageViews.put(imageView, url);
+		Bitmap bitmap = this.memoryCache.get(url);
+		File f = this.fileCache.getFile(url);
+		if (bitmap != null) {
 			imageView.setImageBitmap(bitmap);
-		else if (f.exists()) {
+		} else if (f.exists()) {
 			Bitmap b = BitmapFactory.decodeFile(f.getPath());
 			imageView.setImageBitmap(b);
 		} else {
 			imageView.setImageResource(loader);
-			queuePhoto(url, imageView);
+			this.queuePhoto(url, imageView);
 		}
 	}
 
 	private void queuePhoto(String url, ImageView imageView) {
 		PhotoToLoad p = new PhotoToLoad(url, imageView);
-		executorService.submit(new PhotosLoader(p));
+		this.executorService.submit(new PhotosLoader(p));
 	}
 
 	public Bitmap getBitmap(String url) {
-		File f = fileCache.getFile(url);
+		File f = this.fileCache.getFile(url);
 
 		// from SD cache
 		Bitmap b = BitmapFactory.decodeFile(f.getPath());
-		if (b != null)
+		if (b != null) {
 			return b;
+		}
 
 		// from web
 		try {
@@ -78,11 +79,11 @@ public class ImageLoader {
 			OutputStream os = new FileOutputStream(f);
 			Utils.CopyStream(is, os);
 			os.close();
-			if(f.length() == 0){
+			if (f.length() == 0) {
 				f.delete();
-				bitmap = BitmapFactory.decodeResource(this.context.getResources(),R.drawable.no_image);
-			}
-			else{
+				bitmap = BitmapFactory.decodeResource(
+						this.context.getResources(), R.drawable.no_image);
+			} else {
 				bitmap = BitmapFactory.decodeFile(f.getPath());
 			}
 			return bitmap;
@@ -117,8 +118,8 @@ public class ImageLoader {
 		public ImageView imageView;
 
 		public PhotoToLoad(String u, ImageView i) {
-			url = u;
-			imageView = i;
+			this.url = u;
+			this.imageView = i;
 		}
 	}
 
@@ -131,22 +132,25 @@ public class ImageLoader {
 
 		@Override
 		public void run() {
-			if (imageViewReused(photoToLoad))
+			if (ImageLoader.this.imageViewReused(this.photoToLoad)) {
 				return;
-			Bitmap bmp = getBitmap(photoToLoad.url);
-			memoryCache.put(photoToLoad.url, bmp);
-			if (imageViewReused(photoToLoad))
+			}
+			Bitmap bmp = ImageLoader.this.getBitmap(this.photoToLoad.url);
+			ImageLoader.this.memoryCache.put(this.photoToLoad.url, bmp);
+			if (ImageLoader.this.imageViewReused(this.photoToLoad)) {
 				return;
-			BitmapDisplayer bd = new BitmapDisplayer(bmp, photoToLoad);
-			Activity a = (Activity) photoToLoad.imageView.getContext();
+			}
+			BitmapDisplayer bd = new BitmapDisplayer(bmp, this.photoToLoad);
+			Activity a = (Activity) this.photoToLoad.imageView.getContext();
 			a.runOnUiThread(bd);
 		}
 	}
 
 	boolean imageViewReused(PhotoToLoad photoToLoad) {
-		String tag = imageViews.get(photoToLoad.imageView);
-		if (tag == null || !tag.equals(photoToLoad.url))
+		String tag = this.imageViews.get(photoToLoad.imageView);
+		if ((tag == null) || !tag.equals(photoToLoad.url)) {
 			return true;
+		}
 		return false;
 	}
 
@@ -156,22 +160,26 @@ public class ImageLoader {
 		PhotoToLoad photoToLoad;
 
 		public BitmapDisplayer(Bitmap b, PhotoToLoad p) {
-			bitmap = b;
-			photoToLoad = p;
+			this.bitmap = b;
+			this.photoToLoad = p;
 		}
 
+		@Override
 		public void run() {
-			if (imageViewReused(photoToLoad))
+			if (ImageLoader.this.imageViewReused(this.photoToLoad)) {
 				return;
-			if (bitmap != null)
-				photoToLoad.imageView.setImageBitmap(bitmap);
-			else
-				photoToLoad.imageView.setImageResource(stub_id);
+			}
+			if (this.bitmap != null) {
+				this.photoToLoad.imageView.setImageBitmap(this.bitmap);
+			} else {
+				this.photoToLoad.imageView
+						.setImageResource(ImageLoader.this.stub_id);
+			}
 		}
 	}
 
 	public void clearCache() {
-		memoryCache.clear();
+		this.memoryCache.clear();
 	}
 
 }

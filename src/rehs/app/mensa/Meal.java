@@ -11,7 +11,8 @@ public class Meal {
 	public String zusatz;
 	public String ort;
 
-	public Meal(String title, String type, Float price, String image, String date, String beilage, String zusatz, String ort) {
+	public Meal(String title, String type, Float price, String image,
+			String date, String beilage, String zusatz, String ort) {
 		this.title = title;
 		this.type = type;
 		this.price = price;

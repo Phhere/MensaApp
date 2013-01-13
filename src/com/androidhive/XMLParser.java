@@ -13,6 +13,7 @@ import org.apache.http.util.EntityUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
 import android.util.Log;
 
 public class XMLParser {
@@ -24,7 +25,9 @@ public class XMLParser {
 
 	/**
 	 * Getting XML from URL making HTTP request
-	 * @param url string
+	 * 
+	 * @param url
+	 *            string
 	 * */
 	public String getXmlFromUrl(String url) {
 		String xml = null;
@@ -36,7 +39,7 @@ public class XMLParser {
 
 			HttpResponse httpResponse = httpClient.execute(httpPost);
 			HttpEntity httpEntity = httpResponse.getEntity();
-			xml = EntityUtils.toString(httpEntity,HTTP.UTF_8);
+			xml = EntityUtils.toString(httpEntity, HTTP.UTF_8);
 
 		} catch (UnsupportedEncodingException e) {
 			Log.e("Error", "Killed");
@@ -51,32 +54,38 @@ public class XMLParser {
 		// return XML
 		return xml;
 	}
-	
-	
-	/** Getting node value
-	  * @param elem element
-	  */
-	 public final String getElementValue( Node elem ) {
-	     Node child;
-	     if( elem != null){
-	         if (elem.hasChildNodes()){
-	             for( child = elem.getFirstChild(); child != null; child = child.getNextSibling() ){
-	                 if( child.getNodeType() == Node.TEXT_NODE  ){
-	                     return child.getNodeValue();
-	                 }
-	             }
-	         }
-	     }
-	     return "";
-	 }
-	 
-	 /**
-	  * Getting node value
-	  * @param Element node
-	  * @param key string
-	  * */
-	 public String getValue(Element item, String str) {		
-			NodeList n = item.getElementsByTagName(str);		
-			return this.getElementValue(n.item(0));
+
+	/**
+	 * Getting node value
+	 * 
+	 * @param elem
+	 *            element
+	 */
+	public final String getElementValue(Node elem) {
+		Node child;
+		if (elem != null) {
+			if (elem.hasChildNodes()) {
+				for (child = elem.getFirstChild(); child != null; child = child
+						.getNextSibling()) {
+					if (child.getNodeType() == Node.TEXT_NODE) {
+						return child.getNodeValue();
+					}
+				}
+			}
 		}
+		return "";
+	}
+
+	/**
+	 * Getting node value
+	 * 
+	 * @param Element
+	 *            node
+	 * @param key
+	 *            string
+	 * */
+	public String getValue(Element item, String str) {
+		NodeList n = item.getElementsByTagName(str);
+		return this.getElementValue(n.item(0));
+	}
 }

@@ -1,7 +1,5 @@
 package rehs.app.mensa;
 
-import java.util.Vector;
-import com.androidhive.ImageLoader;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +8,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.androidhive.ImageLoader;
+
 public class MealListArrayAdapter extends BaseAdapter {
-	private LayoutInflater inflater;
-	private Context context;
-	private String thumbnail = "http://majestix.uni-duesseldorf.info/essen/proxy.php?image=";
+	private final LayoutInflater inflater;
+	private final Context context;
+	private final String thumbnail = "http://majestix.uni-duesseldorf.info/essen/proxy.php?image=";
 
 	public MealListArrayAdapter(Context context) {
 		super();
@@ -25,7 +25,7 @@ public class MealListArrayAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View view, ViewGroup parent) {
 		if (view == null) {
-			view = inflater.inflate(R.layout.item, parent, false);
+			view = this.inflater.inflate(R.layout.item, parent, false);
 		}
 		Meal m = DataCollector.meals.get(position);
 
@@ -39,7 +39,7 @@ public class MealListArrayAdapter extends BaseAdapter {
 			String image_url = this.thumbnail + m.image;
 			ImageLoader imgLoader = new ImageLoader(this.context);
 			imgLoader.DisplayImage(image_url, loader, imageView);
-			//new ImageLoader( m.image, imageView, R.drawable.no_image);*/
+			// new ImageLoader( m.image, imageView, R.drawable.no_image);*/
 		} else {
 			imageView.setImageResource(R.drawable.no_image);
 		}

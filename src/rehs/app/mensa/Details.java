@@ -2,61 +2,62 @@ package rehs.app.mensa;
 
 //import com.androidhive.ImageLoader;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.support.v4.app.NavUtils;
 
 public class Details extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		// Infos holen welches Essen angezeigt werden soll
-		Intent intent = getIntent();
+		Intent intent = this.getIntent();
 		Meal m = DataCollector.meals.get(intent.getIntExtra("id", 0));
-		
-		View view = getLayoutInflater().inflate(R.layout.activity_details, null);
-		
-		TextView title =(TextView) view.findViewById(R.id.title);
-		TextView beilage =(TextView) view.findViewById(R.id.beilage);
+
+		View view = this.getLayoutInflater().inflate(R.layout.activity_details,
+				null);
+
+		TextView title = (TextView) view.findViewById(R.id.title);
+		TextView beilage = (TextView) view.findViewById(R.id.beilage);
 		ImageView imageView = (ImageView) view.findViewById(R.id.image);
-		TextView zusatz =(TextView) view.findViewById(R.id.zusatz);
-		
+		TextView zusatz = (TextView) view.findViewById(R.id.zusatz);
+
 		title.setText(m.title);
 		beilage.setText(m.beilage);
-		
+
 		if (m.image != "") {
-			/*int loader = R.drawable.no_image;
-			String image_url = m.image;
-			ImageLoader imgLoader = new ImageLoader(this.getBaseContext());
-			imgLoader.DisplayImage(image_url, loader, imageView);*/
-			new ImageLoader(m.image,imageView,R.drawable.no_image);
+			/*
+			 * int loader = R.drawable.no_image; String image_url = m.image;
+			 * ImageLoader imgLoader = new ImageLoader(this.getBaseContext());
+			 * imgLoader.DisplayImage(image_url, loader, imageView);
+			 */
+			new ImageLoader(m.image, imageView, R.drawable.no_image);
 		} else {
 			imageView.setImageResource(R.drawable.no_image);
 		}
-		
-		if(m.zusatz.isEmpty() == false){
+
+		if (m.zusatz.isEmpty() == false) {
 			zusatz.setText(m.zusatz);
-		}
-		else{
+		} else {
 			zusatz.setText("");
 			zusatz.setVisibility(0);
 		}
-		
-		setContentView(view);
+
+		this.setContentView(view);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_start, menu);
+		this.getMenuInflater().inflate(R.menu.activity_start, menu);
 		return true;
 	}
 

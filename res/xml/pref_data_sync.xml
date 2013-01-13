@@ -14,5 +14,6 @@
         android:positiveButtonText="@null"
         android:title="Typ" />
     <ListPreference android:key="mensa" android:entries="@array/mensa_titles" android:entryValues="@array/mensa_values" android:title="Mensa"/>
+    <ListPreference android:title="Tag" android:key="date" android:entryValues="@array/date_values" android:entries="@array/date_titles"/>
 
 </PreferenceScreen>

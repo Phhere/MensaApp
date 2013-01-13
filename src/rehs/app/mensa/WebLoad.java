@@ -9,13 +9,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
 import com.androidhive.Utils;
 
 public class WebLoad {
 	private File cacheDir;
-	private String url;
-	private int ttl;
-	private String cache;
+	private final String url;
+	private final int ttl;
+	private final String cache;
 
 	public WebLoad(String url, String cache, int ttl) {
 		if (android.os.Environment.getExternalStorageState().equals(
@@ -37,13 +38,13 @@ public class WebLoad {
 	}
 
 	public boolean hasCache() {
-		File cached = new File(this.cacheDir, cache);
-		return (cached.exists() && cached.lastModified() > System
-				.currentTimeMillis() - this.ttl);
+		File cached = new File(this.cacheDir, this.cache);
+		return (cached.exists() && (cached.lastModified() > (System
+				.currentTimeMillis() - this.ttl)));
 	}
 
 	public boolean download() {
-		File cached = new File(this.cacheDir, cache);
+		File cached = new File(this.cacheDir, this.cache);
 		if (this.hasCache()) {
 			return true;
 		} else {
@@ -72,24 +73,25 @@ public class WebLoad {
 		}
 	}
 
-	public InputStream getStream(){
-		File cached = new File(this.cacheDir, cache);
+	public InputStream getStream() {
+		File cached = new File(this.cacheDir, this.cache);
 		if (this.hasCache()) {
 			try {
 				return new FileInputStream(cached);
 			} catch (FileNotFoundException e) {
 				return null;
 			}
-		}
-		else{
+		} else {
 			return null;
 		}
 	}
-	
+
 	public String getString() {
 		this.download();
 		InputStream is = this.getStream();
-		if(is == null) return null;
+		if (is == null) {
+			return null;
+		}
 		java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
 		return s.hasNext() ? s.next() : "";
 	}
